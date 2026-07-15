@@ -16,9 +16,7 @@ for d in docs:
     by_source.setdefault(d["source_type"], 0)
     by_source[d["source_type"]] += 1
 
-cols = st.columns(len(by_source))
-for col, (source, count) in zip(cols, sorted(by_source.items())):
-    col.metric(source, count)
+ui_common.stat_row([(source, str(count), "") for source, count in sorted(by_source.items())])
 
 st.markdown("---")
 query = st.text_input("Semantic search", placeholder="e.g. lateral movement over RDP")

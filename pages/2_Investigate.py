@@ -115,17 +115,18 @@ if incident and incident["alert"]["id"] == selected_id:
         with t4:
             for ioc in investigation.get("ioc_enrichment", []):
                 malicious = ioc.get("reputation", {}).get("malicious")
-                badge_html = ui_common.badge("MALICIOUS", "critical") if malicious else ui_common.badge("benign", "low")
+                badge_html = (
+                    ui_common.badge("malicious", "critical", "🛑")
+                    if malicious
+                    else ui_common.badge("benign", "good", "🟢")
+                )
                 st.markdown(f"**{ioc['ioc']}** ({ioc['ioc_type']}) {badge_html}", unsafe_allow_html=True)
                 st.json(ioc)
 
     if report:
         st.markdown("### Incident report")
-        grounded = grounding.get("is_grounded")
         st.markdown(
-            ui_common.badge(
-                f"grounding {grounding.get('grounding_score', 0):.2f}", "allowed" if grounded else "blocked"
-            ),
+            ui_common.grounding_badge(grounding.get("is_grounded", False), grounding.get("grounding_score", 0)),
             unsafe_allow_html=True,
         )
         rt1, rt2, rt3, rt4, rt5 = st.tabs(["Executive summary", "Technical summary", "Recommendations", "Playbook", "MITRE mapping"])

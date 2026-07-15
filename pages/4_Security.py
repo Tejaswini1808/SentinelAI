@@ -26,8 +26,9 @@ text = st.text_area("Text to scan", value="" if choice == "(custom)" else choice
 if st.button("Scan", type="primary") and text.strip():
     result = prompt_guard.scan(text)
     action = result["action"]
+    blocked = action == "blocked"
     st.markdown(
-        f"### {ui_common.badge(action.upper(), 'blocked' if action == 'blocked' else 'allowed')}",
+        f"### {ui_common.badge(action.upper(), 'critical' if blocked else 'good', '🛑' if blocked else '✅')}",
         unsafe_allow_html=True,
     )
     st.metric("Injection score", result["score"])

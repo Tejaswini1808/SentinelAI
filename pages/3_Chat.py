@@ -23,11 +23,9 @@ for msg in st.session_state.chat_history:
         st.markdown(msg["content"])
         if msg["role"] == "assistant" and msg.get("meta"):
             meta = msg["meta"]
-            grounded = meta["grounding"].get("is_grounded")
             st.markdown(
-                ui_common.badge(
-                    f"grounding {meta['grounding'].get('grounding_score', 0):.2f}",
-                    "allowed" if grounded else "blocked",
+                ui_common.grounding_badge(
+                    meta["grounding"].get("is_grounded", False), meta["grounding"].get("grounding_score", 0)
                 ),
                 unsafe_allow_html=True,
             )
@@ -51,11 +49,9 @@ if prompt:
             st.error("🚨 Prompt injection detected — request blocked before reaching the LLM.")
             st.json(result["security"])
         else:
-            grounded = result["grounding"].get("is_grounded")
             st.markdown(
-                ui_common.badge(
-                    f"grounding {result['grounding'].get('grounding_score', 0):.2f}",
-                    "allowed" if grounded else "blocked",
+                ui_common.grounding_badge(
+                    result["grounding"].get("is_grounded", False), result["grounding"].get("grounding_score", 0)
                 ),
                 unsafe_allow_html=True,
             )

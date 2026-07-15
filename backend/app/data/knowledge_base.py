@@ -55,6 +55,46 @@ _MITRE_ATTACK = [
     ("T1567", "Exfiltration Over Web Service", "Adversaries exfiltrate data using legitimate web services (cloud storage, code repos) to blend in with normal traffic.", "Exfiltration"),
 ]
 
+_FRAMEWORK_OVERVIEWS = [
+    (
+        "MITRE-ATTACK-OVERVIEW",
+        "mitre_attack",
+        "What is MITRE ATT&CK?",
+        "MITRE ATT&CK is a globally-accessible knowledge base of adversary tactics and "
+        "techniques based on real-world observations, maintained by MITRE. It organizes "
+        "attacker behavior into Tactics (the attacker's goal, e.g. Initial Access, "
+        "Execution, Persistence, Exfiltration, Impact) and Techniques (the specific way "
+        "that goal is achieved, e.g. T1566 Phishing, T1059 Command and Scripting "
+        "Interpreter). Security teams use ATT&CK for threat modeling, mapping detections "
+        "and incidents to known adversary behavior, red-team/blue-team exercises, and "
+        "identifying coverage gaps in defenses.",
+    ),
+    (
+        "OWASP-TOP10-OVERVIEW",
+        "owasp",
+        "What is the OWASP Top 10?",
+        "The OWASP Top 10 is a standard awareness document published by the Open Worldwide "
+        "Application Security Project (OWASP) listing the most critical security risks to "
+        "web applications, based on large-scale data analysis and industry survey. It's "
+        "updated periodically (e.g. the 2021 edition) and used by development and security "
+        "teams as a baseline for secure coding, security testing, and procurement "
+        "requirements. Each entry (A01-A10) names a risk category, such as A03 Injection "
+        "or A01 Broken Access Control, rather than a single specific vulnerability.",
+    ),
+    (
+        "NIST-CSF-OVERVIEW",
+        "nist",
+        "What is the NIST Cybersecurity Framework (CSF)?",
+        "The NIST Cybersecurity Framework (CSF) is a voluntary framework published by the "
+        "U.S. National Institute of Standards and Technology to help organizations manage "
+        "and reduce cybersecurity risk. It organizes activities into core Functions — "
+        "Govern, Identify, Protect, Detect, Respond, and Recover — each broken into "
+        "categories and subcategories of outcomes. Organizations use it to assess current "
+        "security posture, set target states, and communicate risk to leadership, "
+        "independent of any specific technology or vendor.",
+    ),
+]
+
 _OWASP_TOP_10_2021 = [
     ("A01", "Broken Access Control", "Restrictions on what authenticated users can do are not properly enforced, allowing access to unauthorized data or functions."),
     ("A02", "Cryptographic Failures", "Sensitive data is exposed due to weak, missing, or misconfigured cryptography (e.g. weak algorithms, cleartext transmission)."),
@@ -102,6 +142,14 @@ _PAST_INCIDENTS = [
 
 def build_knowledge_base() -> list[dict]:
     docs = []
+    for doc_id, source_type, title, text in _FRAMEWORK_OVERVIEWS:
+        docs.append({
+            "doc_id": doc_id,
+            "source_type": source_type,
+            "title": title,
+            "text": text,
+            "tags": [doc_id, "framework_overview", source_type],
+        })
     for tid, name, desc, tactic in _MITRE_ATTACK:
         docs.append({
             "doc_id": tid,

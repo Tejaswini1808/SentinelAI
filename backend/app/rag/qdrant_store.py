@@ -39,9 +39,11 @@ def ensure_collection():
 
 
 def upsert_documents(vectors: list[list[float]], payloads: list[dict]):
+    """Point IDs are derived deterministically from doc_id so re-running
+    ingestion updates existing documents in place instead of duplicating them."""
     client = get_client()
     points = [
-        PointStruct(id=str(uuid.uuid4()), vector=vector, payload=payload)
+        PointStruct(id=str(uuid.uuid5(uuid.NAMESPACE_URL, payload["doc_id"])), vector=vector, payload=payload)
         for vector, payload in zip(vectors, payloads)
     ]
     client.upsert(collection_name=_settings.qdrant_collection, points=points)
