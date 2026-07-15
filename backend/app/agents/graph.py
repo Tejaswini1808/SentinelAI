@@ -41,3 +41,27 @@ def run_alert_pipeline(alert: dict) -> AlertState:
     graph = get_graph()
     result = graph.invoke({"alert": alert})
     return result
+
+
+def run_alert_pipeline_with_progress(alert: dict, on_step=None) -> AlertState:
+    """Same pipeline as run_alert_pipeline, but calls on_step(stage_name, state)
+    after each agent so a UI can render incremental progress instead of one
+    opaque multi-minute wait."""
+    state: AlertState = {"alert": alert}
+
+    state.update(triage_node(state))
+    if on_step:
+        on_step("triage", state)
+
+    if state.get("triage", {}).get("classification") == "False Positive":
+        return state
+
+    state.update(investigation_node(state))
+    if on_step:
+        on_step("investigate", state)
+
+    state.update(report_node(state))
+    if on_step:
+        on_step("report", state)
+
+    return state
