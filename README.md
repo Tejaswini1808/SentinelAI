@@ -122,12 +122,3 @@ To deploy on [Streamlit Community Cloud](https://share.streamlit.io):
 | `POST /agents/triage` / `/agents/hunt` / `/agents/report` | Invoke a single agent directly |
 | `GET /metrics` | Retrieval latency, agent execution time, token usage, prompt-injection/hallucination counters |
 
-## What's here vs. the full spec
-
-This MVP implements 3 of the 6 planned agents (Triage, Investigation — which
-also covers threat hunting, IOC enrichment, and risk scoring for now — and
-Incident Report), an in-memory store instead of Postgres/Redis, and a
-Streamlit UI instead of a React/Tailwind dashboard. The event pipeline
-(NATS/Kafka), Postgres/Redis persistence, CI/CD, Prometheus/Grafana/
-OpenTelemetry, and the remaining agent split-outs are natural next steps
-once this core loop is validated.
